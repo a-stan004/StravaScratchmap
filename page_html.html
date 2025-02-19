@@ -1,8 +1,47 @@
 <!DOCTYPE html>
+<head>
+    
+</head>
 <html>
     <body>
-        <h1> hello </h1>
+        <h1> Welcome to StravaScratchMap </h1>
+        <p> 
+            Please sign up by following the steps below: <br> <br>
+            Firstly please navigate to https://www.strava.com/settings/api to get your API details
+        </p>
+
+        <div id='stageone'>
+        <label for="clientid">Client ID:</label><br>
+        <input type="text" id="clientid" name="clientid" placeholder="123456"><br>
+        <button onclick="setReadAll()">Submit</button>
+        </div>
+
+        <div id="stagetwo" style="display: none;">
+        <p> From Strava API settings </p><br>
+        <label for="clientsecret">Client Secret:</label><br>
+        <input type="text" id="clientsecret" name="clientsecret" placeholder="swdg7weriug973rqbuiqe"><br>
+        <!--<label for="refreshtoken">Refresh Token:</label><br>
+        <input type="text" id="refreshtoken" name="refreshtoken" placeholder="23rb98efobuqeh0823rnoi"><br>
+        -->
+        <p> From URL </p> <br> <br>
+        <label for="code">Code:</label><br>
+        <input type="text" id="code" name="code" placeholder="23tbg7feg1g08g92308"><br>
+        <p> 
+            <strong>Please read before submitting</strong><br><br>
+            Click submit and you will be directed to a page to authorise the app. This page looks like it does not load, which is okay. <br>
+            Please then return to this page and enter the code from the URL returned. This allows the app to read your activities. <br>
+            This will look like the below: <br>
+            http://localhost/exchange_token?state=&code=<strong><u>0d907da3a10cc86d97b0a32eb74b94e40e7c661d</u></strong>&scope=read,activity:read_all
+        </p>
+        <button onclick="submitDetails()">Submit</button>
         <script src=strava_api.js></script>
-        <div onclick="openInNewTab();">Something To Click On</div>
+        </div>
+
+
+
+
+        </div>
+
+
     </body>
 </html>
