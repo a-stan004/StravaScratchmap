@@ -30,21 +30,51 @@
   </style>
 
   <body>
-    <arcgis-map basemap="arcgis/topographic" center="-118.805, 34.027" zoom="13">
+    <arcgis-map basemap="arcgis/topographic" center="0.1276, 51.5072" zoom="13">
         <arcgis-zoom position="top-left"></arcgis-zoom>
     </arcgis-map>
 
     <script>
-        require(["esri/Graphic", "esri/layers/GraphicsLayer"], (Graphic, GraphicsLayer) => {
+        require(["esri/Graphic", "esri/layers/GraphicsLayer", "esri/layers/VectorTileLayer", "esri/layers/FeatureLayer", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer"], 
+        (Graphic, GraphicsLayer, VectorTileLayer, FeatureLayer, SimpleFillSymbol, SimpleRenderer) => {
+
             const arcgisMap = document.querySelector("arcgis-map");
+
             arcgisMap.addEventListener("arcgisViewReadyChange", () => {
+
+              const greyFillSymbol = new SimpleFillSymbol({
+              color: [148, 148, 148, 1], // RGBA for grey color
+              style: "solid",
+              outline: {
+              color: [255, 255, 255, 1],
+              width: 0
+              }
+              });
+
+              const greyRenderer = new SimpleRenderer({
+              symbol: greyFillSymbol
+              });
+
+            const vtlLayer = new VectorTileLayer({
+            url: "https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer"
+            });
+            arcgisMap.addLayer(vtlLayer);
+
+
+            const greyLayer = new FeatureLayer({
+            url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries_(Generalized)/FeatureServer/0",
+            renderer: greyRenderer
+            });
+            arcgisMap.addLayer(greyLayer);
+
+            
 
             const graphicsLayer = new GraphicsLayer();
             arcgisMap.addLayer(graphicsLayer);
             
             let displayRoute = JSON.parse(localStorage.getItem('scratchmap_routes'));
 
-                const polyline = {
+              const polyline = {
                 type: "polyline",
                 paths: displayRoute
                 }
@@ -61,7 +91,7 @@
                 });
 
             graphicsLayer.add(polylineGraphic);
-            //}   
+
         });
         }
         );
