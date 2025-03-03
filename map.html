@@ -22,13 +22,45 @@
   arcgis-map {
     padding: 0;
     margin: 0;
-    height: 100%;
+    height: 90%;
     width: 100%;
   }
+  .header {
+  padding: 0px;
+  text-align: center;
+  background: #ffffff;
+  color: rgb(255, 153, 0);
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  .column {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  .reload {
+  padding: 0px;
+  text-align: center;
+  color: rgb(255,153,0);
+  text-decoration: none;
+  }
+  
 </style>
 
 <body>
-  <arcgis-map center="0.1276, 51.5072" zoom="13">
+  <div class="header">
+    <div class="column">
+      <h1>StravaScratchmap</h1>
+    </div>
+    <div class="column">
+      <a class="reload" href="page_html.html"> Reload credentials </a>
+    </div>
+  </div>
+
+  <arcgis-map center="-1.898575, 52.4823" zoom="6">
     <arcgis-zoom position="top-left"></arcgis-zoom>
   </arcgis-map>
 
@@ -79,7 +111,7 @@
         arcgisMap.addEventListener("arcgisViewReadyChange", () => {
 
           const greyFillSymbol = new SimpleFillSymbol({
-            color: [148, 148, 148, 0.85], // RGBA for grey color
+            color: [148, 148, 148, 0.75], // RGBA for grey color
             style: "solid",
             outline: {
               color: [255, 255, 255, 1],
