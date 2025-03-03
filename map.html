@@ -1,104 +1,114 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
-    <script src=auth_key.js></script>
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.2/calcite.css" />
-    <script type="module" src="https://js.arcgis.com/calcite-components/2.13.2/calcite.esm.js"></script>
 
-    <!-- Load the ArcGIS Maps SDK for JavaScript from CDN -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
-    <script src="https://js.arcgis.com/4.31/"></script>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
+  <script src=auth_key.js></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.2/calcite.css" />
+  <script type="module" src="https://js.arcgis.com/calcite-components/2.13.2/calcite.esm.js"></script>
 
-    <!-- Load Map components from CDN-->
-    <script
-      type="module"
-      src="https://js.arcgis.com/map-components/4.31/arcgis-map-components.esm.js"
-    ></script>
-  </head>
+  <!-- Load the ArcGIS Maps SDK for JavaScript from CDN -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
+  <script src="https://js.arcgis.com/4.31/"></script>
 
-  <style>
-    html,
-    body,
-    arcgis-map {
-      padding: 0;
-      margin: 0;
-      height: 100%;
-      width: 100%;
-    }
-  </style>
+  <!-- Load Map components from CDN-->
+  <script type="module" src="https://js.arcgis.com/map-components/4.31/arcgis-map-components.esm.js"></script>
+</head>
 
-  <body>
-    <arcgis-map basemap="arcgis/topographic" center="0.1276, 51.5072" zoom="13">
-        <arcgis-zoom position="top-left"></arcgis-zoom>
-    </arcgis-map>
+<style>
+  html,
+  body,
+  arcgis-map {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
+</style>
 
-    <script>
-        require(["esri/Graphic", "esri/layers/GraphicsLayer", "esri/layers/VectorTileLayer", "esri/layers/FeatureLayer", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer"], 
-        (Graphic, GraphicsLayer, VectorTileLayer, FeatureLayer, SimpleFillSymbol, SimpleRenderer) => {
+<body>
+  <arcgis-map basemap="arcgis/streets-night" center="0.1276, 51.5072" zoom="13">
+    <arcgis-zoom position="top-left"></arcgis-zoom>
+  </arcgis-map>
 
-            const arcgisMap = document.querySelector("arcgis-map");
+  <script>
+    require(["esri/Graphic", "esri/layers/GraphicsLayer", "esri/layers/VectorTileLayer", "esri/layers/GroupLayer",
+      "esri/layers/FeatureLayer", "esri/symbols/SimpleFillSymbol", "esri/renderers/SimpleRenderer", "esri/symbols/CIMSymbol"],
+      (Graphic, GraphicsLayer, VectorTileLayer, GroupLayer, FeatureLayer, SimpleFillSymbol, SimpleRenderer, CIMSymbol) => {
 
-            arcgisMap.addEventListener("arcgisViewReadyChange", () => {
+        const arcgisMap = document.querySelector("arcgis-map");
 
-              const greyFillSymbol = new SimpleFillSymbol({
-              color: [148, 148, 148, 1], // RGBA for grey color
-              style: "solid",
-              outline: {
+        const graphicsLayer = new GraphicsLayer({
+          blendMode: "destination-atop"
+        });
+
+
+        let displayRoute = JSON.parse(localStorage.getItem('scratchmap_routes'));
+
+        const polyline = {
+          type: "polyline",
+          paths: displayRoute
+        };
+
+        const simpleLineSymbol = {
+          type: "simple-line",
+          color: [226, 119, 40], // Orange
+          width: 50
+        };
+
+        const polylineGraphic = new Graphic({
+          geometry: polyline,
+          symbol: simpleLineSymbol,
+        });
+
+        graphicsLayer.add(polylineGraphic);
+
+        arcgisMap.addEventListener("arcgisViewReadyChange", () => {
+
+          const greyFillSymbol = new SimpleFillSymbol({
+            color: [148, 148, 148, 0.85], // RGBA for grey color
+            style: "solid",
+            outline: {
               color: [255, 255, 255, 1],
               width: 0
-              }
-              });
+            }
+          });
 
-              const greyRenderer = new SimpleRenderer({
-              symbol: greyFillSymbol
-              });
+          const greyRenderer = new SimpleRenderer({
+            symbol: greyFillSymbol
+          });
 
-            const vtlLayer = new VectorTileLayer({
-            url: "https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer"
-            });
-            arcgisMap.addLayer(vtlLayer);
+          const OSM_map = new VectorTileLayer({
+            url: "https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer"
+          });
 
-
-            const greyLayer = new FeatureLayer({
+          const scratchFoil = new FeatureLayer({
             url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries_(Generalized)/FeatureServer/0",
             renderer: greyRenderer
-            });
-            arcgisMap.addLayer(greyLayer);
+          });
 
-            
+          arcgisMap.map.add(scratchFoil);
 
-            const graphicsLayer = new GraphicsLayer();
-            arcgisMap.addLayer(graphicsLayer);
-            
-            let displayRoute = JSON.parse(localStorage.getItem('scratchmap_routes'));
+          const groupLayer = new GroupLayer({
+            title: "Group Layer",
+            layers: [
+              OSM_map,
+              graphicsLayer
+            ]
+          });
 
-              const polyline = {
-                type: "polyline",
-                paths: displayRoute
-                }
-            
-                const simpleLineSymbol = {
-                type: "simple-line",
-                color: [226, 119, 40], // Orange
-                width: 2
-                };
+          arcgisMap.map.add(groupLayer);
 
-                const polylineGraphic = new Graphic({
-                geometry: polyline,
-                symbol: simpleLineSymbol
-                });
 
-            graphicsLayer.add(polylineGraphic);
 
         });
-        }
-        );
-  
-      </script>
+      }
+    );
+
+  </script>
 
 
-  </body>
+</body>
 
 </html>
