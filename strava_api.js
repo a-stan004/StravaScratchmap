@@ -6,11 +6,16 @@ function getDetails(detail) {
 
 //Changes the users access to read all using client id
 function setReadAll() {
-  (clientidurl = getDetails("clientid")),
-    (readall_url = `http://www.strava.com/oauth/authorize?client_id=${clientidurl}&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=activity:read_all`);
-  window.open(readall_url);
-  document.getElementById("stageone").style.display = "none";
-  document.getElementById("stagetwo").style.display = "block";
+  clientidurl = getDetails("clientid");
+  readall_url = `http://www.strava.com/oauth/authorize?client_id=${clientidurl}&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=activity:read_all`;
+  if (clientidurl.length > 1) {
+    window.open(readall_url);
+    document.getElementById("stageone").style.display = "none";
+    document.getElementById("stagetwo").style.display = "block";
+  } else {
+    document.getElementById("clientiderror").style.display = "block";
+    document.getElementById("clientiderror").innerHTML = "Please enter a valid Client ID";
+  }
 }
 
 const authlink = "https://www.strava.com/oauth/token?";
@@ -22,11 +27,15 @@ function getActivities(res) {
   const activities_link = `https://www.strava.com/api/v3/athlete/activities?per_page=200&access_token=${res.access_token}`;
   fetch(activities_link)
     .then((res) => res.json())
-    .then((data) => parseActivities(data));
+    .then((data) => parseActivities(data))
+    .then(() => {console.log('data_logged');});
 }
 
 //Authorises the user based off their details provided, uses the Medium method where authorization code used
 function reAuthorise() {
+  document.getElementById("loading").style.color = "#ef591e";
+  document.getElementById("loading").innerHTML = "Loading..."
+  document.getElementById("loading").style.display = "block";
   const userclientid = clientidurl;
   console.log(userclientid);
   const userclientsecret = getDetails("clientsecret");
@@ -45,9 +54,31 @@ function reAuthorise() {
       code: usercode,
       grant_type: "authorization_code",
     }),
-  })
-    .then((res) => res.json())
-    .then((res) => getActivities(res));
+  }).then((res) => {
+    if (res.ok) {
+      res
+        .json()
+        .then((res) => getActivities(res))
+        .then(() => {
+          // Ensure the page doesn't load until the activity has been fetched
+          return new Promise((resolve) => {
+            const checkDataLogged = setInterval(() => {
+              if (localStorage.getItem("scratchmap_routes")) {
+                clearInterval(checkDataLogged);
+                resolve();
+              }
+            }, 100);
+          });
+        })
+        .then(() => {
+          window.location.href = "map.html";
+        });
+    } else {
+      document.getElementById("loading").style.color = "red";
+      document.getElementById("loading").innerHTML =
+        "An error occured, please check details and try again";
+    }
+  });
 }
 
 // Thanks to mgd722 for the github function to decrypt polylines, converted to JS
@@ -88,9 +119,14 @@ function parseActivities(data) {
     polyline = item["map"]["summary_polyline"];
     decoded_line = decodePolyline(polyline);
     routes.push(decoded_line);
-    localStorage.setItem("scratchmap_routes", JSON.stringify(routes));
-  }
+    }
+    localStorage.setItem("scratchmap_routes", JSON.stringify(routes))
+    console.log('storedroutes');
   console.log(routes);
+}
+
+function pickUp() {
+  window.location.href = "map.html"
 }
 
 console.log(activitiesData);

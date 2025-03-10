@@ -1,47 +1,113 @@
 <!DOCTYPE html>
 
+<html>
+
 <!--Import functions from JavaScript file-->
 
 <head>
     <script src=strava_api.js></script>
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.2/calcite.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
 </head>
 
-<html>
+<style>
+    .header {
+        padding: 0px;
+        text-align: center;
+        background: #ffffff;
+        color: #ef591e;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .column {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .maincolumn {
+        float: left;
+        width: 40%;
+        padding: 2%;
+    }
+    .button {
+        background-color: #ef591e;
+        padding: 10px;
+        color: white;
+        border-radius: 20%;
+        border-width: 0px;
+    }
+</style>
 
 <body>
-    <h1> Welcome to StravaScratchMap </h1>
-    <p>
-        Please sign up by following the steps below: <br> <br>
-        Firstly please navigate to https://www.strava.com/settings/api to get your API details
-    </p>
-
-    <div id='stageone'>
-        <label for="clientid">Client ID:</label><br>
-        <input type="text" id="clientid" name="clientid" placeholder="123456"><br>
-        <button onclick="setReadAll()">Submit</button>
+    <div class="header">
+        <div class="column">
+            <h1>StravaScratchmap</h1>
+        </div>
+        <div class="column">
+            
+        </div>
     </div>
 
-    <div id="stagetwo" style="display: none;">
-        <p> From Strava API settings </p><br>
-        <label for="clientsecret">Client Secret:</label><br>
-        <input type="text" id="clientsecret" name="clientsecret" placeholder="swdg7weriug973rqbuiqe"><br>
-        <!--<label for="refreshtoken">Refresh Token:</label><br>
-        <input type="text" id="refreshtoken" name="refreshtoken" placeholder="23rb98efobuqeh0823rnoi"><br>
-        -->
-        <p> From URL </p> <br> <br>
-        <label for="code">Code:</label><br>
-        <input type="text" id="code" name="code" placeholder="23tbg7feg1g08g92308"><br>
-        <p>
-            <strong>Please read before submitting</strong><br><br>
-            Click submit and you will be directed to a page to authorise the app. This page looks like it does not load,
-            which is okay. <br>
-            Please then return to this page and enter the code from the URL returned. This allows the app to read your
-            activities. <br>
-            This will look like the below: <br>
-            http://localhost/exchange_token?state=&code=<strong><u>0d907da3a10cc86d97b0a32eb74b94e40e7c661d</u></strong>&scope=read,activity:read_all
-        </p>
-        <button onclick="reAuthorise()">Submit</button>
-        <a href="map.html"> Load map </a>
+    <div>
+        <div class="maincolumn">
+            <h1> Welcome to StravaScratchMap </h1>
+
+            <div id="welcomeBack" style="display:none; background-color: #c9c9c9c5; padding: 2%; border-radius: 5%;">
+                <h3>Welcome back!</h3>
+                <p>If your Strava account has no new activities, pick up where you left off here:</p>
+                <button class="button" onclick="pickUp()">Skip sign-in</button>
+            </div>
+
+            <script> 
+                var checkStore = JSON.parse(localStorage.getItem('scratchmap_routes'));
+                console.log(typeof checkStore)
+                console.log(checkStore)
+                if (checkStore != null) {document.getElementById("welcomeBack").style.display = "block";}
+            </script>
+
+            <div id='stageone'>
+                <p>
+                    Please sign up by following the steps below: <br> <br>
+                    <li>Navigate to https://www.strava.com/settings/api to get your API details</li>
+                    <li>Create an app instance, give it a name and category, you can leave all other spaces blank or put N/A </li>
+                    <li>Get your Client ID from the resulting page and enter it below</li>
+                </p>
+                <label for="clientid">Client ID:</label><br>
+                <input type="text" id="clientid" name="clientid" placeholder="123456"><br>
+                <p id="clientiderror" style="display: none; color: red"></p>
+                <p>
+                    <strong>Please read before submitting</strong><br>
+                    <li>Click <strong>Submit</strong> and you will be directed to a page to authorise the app.</li>
+                    <li>Press <strong>Authorise</strong>.</li>
+                    <li>The page will not load. This is okay! Look at the URL at the top.</li>
+                    <li>Please return to this page and </strong>enter the code from the URL</strong> returned. This allows the app to
+                    read your activities.</li>
+                    <li>This will look like the following:<br>
+                    <i>http://localhost/exchange_token?state=&code=<strong><u style="color: #ef591e;">0d907da3a10cc86d97b0a32eb74b94e40e7c661d</u></strong>&scope=read,activity:read_all</i></li>
+                </p>
+                <button class="button" onclick="setReadAll()">Submit</button>
+            </div>
+
+            <div id="stagetwo" style="display: none;">
+                <a href = "page_html.html" style="color:#ef591e">Back</a><br>
+                <p> <strong>From Strava API settings:</strong> </p>
+                <label for="clientsecret">Client Secret:</label>
+                <input type="text" id="clientsecret" name="clientsecret" placeholder="swdg7weriug973rqbuiqe"><br>
+                <p> <strong>From previous stage URL:</strong> </p>
+                <label for="code">Code:</label>
+                <input type="text" id="code" name="code" placeholder="23tbg7feg1g08g92308"><br> <br>
+                <button class = "button" onclick="reAuthorise()">Submit</button>
+                <p id="loading" style = "color:#ef591e; display: none;"> Loading...</p>
+            </div>
+        </div>
+        <div class="maincolumn">
+            <img src="https://developers.strava.com/images/getting-started-1.png"></img>
+        </div>
     </div>
 
 
