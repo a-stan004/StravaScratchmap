@@ -36,6 +36,9 @@
   justify-content: center;
   align-items: center;
   }
+  .row {
+    width: 100%;
+  }
   .column {
   flex: 1;
   display: flex;
@@ -53,18 +56,20 @@
 
 <body onload="loadMap()">
   <div class="header">
-    <div class="column">
-      <h1>StravaScratchmap</h1>
+    <div class="row">
+      <div class="column">
+        <h1>StravaScratchmap</h1>
+      </div>
+      <div class="column">
+        <a class="reload" href="page_html.html"> Reload credentials </a>
+      </div>
     </div>
-    <div class="column">
-      <a class="reload" href="page_html.html"> Reload credentials </a>
-      <script>
-        
-
-      </script>
-      <input type="number" id="widthInput" name="widthInput" placeholder="123456" value="10">
-      <button class="button" onclick="loadMap()">Submit</button>
-    </div>
+  </div>
+  <div id="coins">
+    <img src="coins/1p.png" onclick="widthButton(5)">
+    <img src="coins/2p.png" onclick="widthButton(10)">
+    <img src="coins/50p.png" onclick="widthButton(20)">
+    <img src="coins/2pound.png" onclick="widthButton(50)">
   </div>
 
   <arcgis-map center="-1.898575, 52.4823" zoom="6">

@@ -1,14 +1,12 @@
-/**
- * Takes user input value and converts to a number for width value
- * @param {HTMLElement} text field input of width
- * @return {number} width number
- */
-function checkWidth(input) {
-  var width = Number(input);
-  console.log(typeof width);
-  console.log(width);
-  return width;
+var overallWidth = Number(0)
+
+function widthButton(input) {
+  console.log('width button called');
+  overallWidth = Number(input);
+  console.log(overallWidth);
 }
+
+
 
 //Get required packages and load map
 function loadMap() {
@@ -70,7 +68,7 @@ function loadMap() {
       * Uses check width to gather user input, clears routes and rewrites
     */
     function updatePolylineWidth() {
-      const width = checkWidth(document.getElementById("widthInput").value);
+      const width = overallWidth
       console.log('width provided is ', width);
 
       const simpleLineSymbol = {
@@ -91,7 +89,7 @@ function loadMap() {
     updatePolylineWidth();
 
     //Everytime input changes redraw the graphics layer
-    document.getElementById("widthInput").addEventListener("input", updatePolylineWidth);
+    document.getElementById("coins").addEventListener("click", updatePolylineWidth);
 
     //When view is ready add layers
     arcgisMap.addEventListener("arcgisViewReadyChange", () => {
@@ -135,3 +133,5 @@ function loadMap() {
     });
   });
 }
+
+loadMap();
