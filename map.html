@@ -29,7 +29,7 @@
   arcgis-map {
     padding: 0;
     margin: 0;
-    height: 90%;
+    height: calc(100% - 100px);
     width: 100%;
   }
   .header {
@@ -47,28 +47,27 @@
 </style>
 
 <body onload="loadMap()">
-  <div class="header">
-    <div class="container text-center d-flex justify-content-between align-items-center" style="padding:1%">
+  <div class="container-fluid text-center header">
+    <div class="row align-items-center bg-body-secondary">
       <div class="col">
-        <h1>StravaScratchmap</h1>
+        <img src="coins/logo.png" width="35%">
       </div>
       <div class="col">
         <a class="orange" href="page_html.html"> Reload credentials </a>
       </div>
     </div>
+    <div class="row">
+      <div class="col" id="coins">
+        <p class="orange">Choose your scratcher</p>
+        <img src="coins/1p.png" onclick="widthButton(5)" width="5%">
+        <img src="coins/2p.png" onclick="widthButton(10)" width="5%">
+        <img src="coins/50p.png" onclick="widthButton(20)" width="5%">
+        <img src="coins/2pound.png" onclick="widthButton(50)" width="5%">
+      </div>
+    </div>
+    <arcgis-map center="-1.898575, 52.4823" zoom="6">
+      <arcgis-zoom position="top-left"></arcgis-zoom>
+    </arcgis-map>
   </div>
-  <div class="container text-center " id="coins">
-    <p class="orange">Choose your scratcher</p>
-    <img src="coins/1p.png" onclick="widthButton(5)" height="10%">
-    <img src="coins/2p.png" onclick="widthButton(10)" height="15%">
-    <img src="coins/50p.png" onclick="widthButton(20)" height="18%">
-    <img src="coins/2pound.png" onclick="widthButton(50)" height="20%">
-  </div>
-
-  <arcgis-map center="-1.898575, 52.4823" zoom="6">
-    <arcgis-zoom position="top-left"></arcgis-zoom>
-  </arcgis-map>
-
 </body>
-
 </html>

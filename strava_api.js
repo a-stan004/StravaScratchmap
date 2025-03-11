@@ -114,7 +114,7 @@ function decodePolyline(polylineStr) {
 }
 
 function parseActivities(data) {
-  routes = [];
+  
   for (const item of data) {
     polyline = item["map"]["summary_polyline"];
     decoded_line = decodePolyline(polyline);
