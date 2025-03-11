@@ -24,11 +24,20 @@ let activitiesData = [];
 
 //Runs last and gets the activities
 function getActivities(res) {
-  const activities_link = `https://www.strava.com/api/v3/athlete/activities?per_page=200&access_token=${res.access_token}`;
-  fetch(activities_link)
-    .then((res) => res.json())
-    .then((data) => parseActivities(data))
-    .then(() => {console.log('data_logged');});
+  const fetchPromises = [];
+  for (let counter = 1; counter < 10; counter++) {
+    const activities_link = `https://www.strava.com/api/v3/athlete/activities?page=${counter}&per_page=200&access_token=${res.access_token}`;
+    fetchPromises.push(
+      fetch(activities_link)
+        .then((res) => res.json())
+        .then((data) => parseActivities(data))
+    );
+  }
+
+  Promise.all(fetchPromises).then(() => {
+    console.log('All activities fetched and stored');
+    window.location.href = "map.html";
+  });
 }
 
 //Authorises the user based off their details provided, uses the Medium method where authorization code used
@@ -58,22 +67,7 @@ function reAuthorise() {
     if (res.ok) {
       res
         .json()
-        .then((res) => getActivities(res))
-        .then(() => {
-          // Ensure the page doesn't load until the activity has been fetched
-          return new Promise((resolve) => {
-            const checkDataLogged = setInterval(() => {
-              if (localStorage.getItem("scratchmap_routes")) {
-                clearInterval(checkDataLogged);
-                resolve();
-              }
-            }, 100);
-          });
-        })
-        .then(() => {
-          window.location.href = "map.html";
-        });
-    } else {
+        .then((res) => getActivities(res))} else {
       document.getElementById("loading").style.color = "red";
       document.getElementById("loading").innerHTML =
         "An error occured, please check details and try again";
@@ -112,6 +106,8 @@ function decodePolyline(polylineStr) {
 
   return coordinates;
 }
+
+routes = [];
 
 function parseActivities(data) {
   
