@@ -6,7 +6,15 @@ function widthButton(input) {
   console.log(overallWidth);
 }
 
-
+function setDistance() {
+  var distances = (Number(Math.round(localStorage.getItem("distances")/1000)));
+  var elevations = localStorage.getItem("elevations");
+  var activities = localStorage.getItem("activities");
+  console.log(`distance is ${distances}`);
+  document.getElementById('distancemeter').innerHTML = distances;
+  document.getElementById('elevationmeter').innerHTML = elevations;
+  document.getElementById('activitymeter').innerHTML = activities;
+}
 
 //Get required packages and load map
 function loadMap() {
@@ -135,3 +143,5 @@ function loadMap() {
 }
 
 loadMap();
+
+

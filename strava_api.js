@@ -30,7 +30,10 @@ function getActivities(res) {
     fetchPromises.push(
       fetch(activities_link)
         .then((res) => res.json())
-        .then((data) => parseActivities(data))
+        .then((data) => {
+          parseActivities(data);
+          getTotal(data);
+        })
     );
   }
 
@@ -123,6 +126,25 @@ function parseActivities(data) {
 
 function pickUp() {
   window.location.href = "map.html"
+}
+
+function getTotal(data) {
+  var distances = 0;
+  var elevations = 0;
+  var activities = 0;
+  for (const item of data) {
+    distance_single = Number(item["distance"]);
+    distances = distances + distance_single;
+  }
+  for (const item of data) {
+    elevation_single = Number(Math.round(item["total_elevation_gain"]));
+    elevations = elevations + elevation_single
+    activities = activities + 1;
+  }
+    console.log(distances);
+    localStorage.setItem("distances", distances)
+    localStorage.setItem("elevations", elevations)
+    localStorage.setItem("activities", activities)
 }
 
 console.log(activitiesData);

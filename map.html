@@ -43,26 +43,40 @@
   color: #ef591e;
   text-decoration: none;
   }
+  .reload {
+    background-color: none;
+    color: #ef591e;
+    border: 2px solid #ef591e;
+    border-radius: 15px;
+    text-decoration: none;
+    padding: 5px;
+  }
+  .black {
+    color: #282424;
+  }
   
 </style>
 
-<body onload="loadMap()">
-  <div class="container-fluid text-center header">
-    <div class="row align-items-center bg-body-secondary">
-      <div class="col">
-        <img src="coins/logo.png" width="35%">
-      </div>
-      <div class="col">
-        <a class="orange" href="page_html.html"> Reload credentials </a>
+<body onload="loadMap(), setDistance()">
+  <div class="container-fluid  text-center header">
+    <div class="row align-items-center bg-body-secondary" style="padding-bottom: 10px;">
+      <div class="col padding">
+        <img src="coins/logo.png" width="20%"><br>
+        <a class="reload button" href="page_html.html"> Reload credentials </a><br>
       </div>
     </div>
-    <div class="row">
-      <div class="col" id="coins">
+    <div class="row text-center align-items-center">
+      <div class="col-8" id="coins">
         <p class="orange">Choose your scratcher</p>
-        <img src="coins/1p.png" onclick="widthButton(5)" width="5%">
-        <img src="coins/2p.png" onclick="widthButton(10)" width="5%">
-        <img src="coins/50p.png" onclick="widthButton(20)" width="5%">
-        <img src="coins/2pound.png" onclick="widthButton(50)" width="5%">
+        <img src="coins/1p.png" onclick="widthButton(5)" width="6%">
+        <img src="coins/2p.png" onclick="widthButton(10)" width="7%">
+        <img src="coins/50p.png" onclick="widthButton(20)" width="8%">
+        <img src="coins/2pound.png" onclick="widthButton(50)" width="8.5%">
+      </div>
+      <div class="col-4">
+        <h4 class="black" style="padding-bottom: 2px;">You've travelled <strong class="orange" id="distancemeter"></strong> km,</h3>
+        <h4 class="black" style="padding-bottom: 2px;">ascended <strong class="orange" id="elevationmeter"></strong> m,</h3>
+        <h4 class="black" style="padding-bottom: 2px;">and logged <strong class="orange" id="activitymeter"></strong> activities!</h3>
       </div>
     </div>
     <arcgis-map center="-1.898575, 52.4823" zoom="6">
