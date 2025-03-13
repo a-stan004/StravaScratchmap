@@ -2,7 +2,7 @@
 
 <html>
 
-<!--Import functions from JavaScript file-->
+<!--Import functions from JavaScript files-->
 
 <head>
     <script src=strava_api.js></script>
@@ -12,23 +12,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
+    <!--Import ArcGIS files-->
     <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.2/calcite.css" />
     <link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
 </head>
 
+<!--Custom CSS Styling-->
 <style>
     .header {
-  padding: 0px;
-  background: #ffffff;
-  color: #ef591e;
-  font-size: 20px;
-  }
-  .orange {
-  padding: 0px;
-  color: #ef591e;
-  text-decoration: none;
-  }
+        padding: 0px;
+        background: #ffffff;
+        color: #ef591e;
+        font-size: 20px;
+    }
+
+    .orange {
+        padding: 0px;
+        color: #ef591e;
+        text-decoration: none;
+    }
 
     .column {
         flex: 1;
@@ -50,6 +52,7 @@
     }
 </style>
 
+<!--Header-->
 <body>
     <div class="container-fluid text-center header">
         <div class="row align-items-center bg-body-secondary">
@@ -61,72 +64,71 @@
             </div>
         </div>
     </div>
+<!--Sign in page-->
+    <div>
+        <div class="row maincolumn">
+            <div class="col">
+                <h1> Welcome to StravaScratchMap </h1>
 
-        <div>
-            <div class="row maincolumn">
-                <div class="col">
-                    <h1> Welcome to StravaScratchMap </h1>
-
-                    <div id="welcomeBack"
-                        style="display:none; background-color: #c9c9c9c5; padding: 2%; border-radius: 5%; text-align: center;">
-                        <h3 class="orange">Welcome back!</h3>
-                        <p>If your Strava account has no new activities, pick up where you left off here:</p>
-                        <button class="button" onclick="pickUp()">Skip sign-in</button>
-                    </div>
-
-                    <script>
-                        var checkStore = JSON.parse(localStorage.getItem('scratchmap_routes'));
-                        console.log(typeof checkStore)
-                        console.log(checkStore)
-                        if (checkStore != null) { document.getElementById("welcomeBack").style.display = "block"; }
-                    </script>
-
-                    <div id='stageone'>
-                        <p>
-                            <br><strong>Please sign up by following the steps below: </strong><br>
-                            <li>Navigate to https://www.strava.com/settings/api to get your API details</li>
-                            <li>Create an app instance, give it a name and category, you can leave all other spaces
-                                blank or put N/A </li>
-                            <li>Get your Client ID from the resulting page and enter it below</li>
-                        </p>
-                        <label for="clientid">Client ID:</label><br>
-                        <input type="text" id="clientid" name="clientid" placeholder="123456"><br>
-                        <p id="clientiderror" style="display: none; color: red"></p>
-                        <p>
-                            <strong>Please read before submitting</strong><br>
-                            <li>Click <strong>Submit</strong> and you will be directed to a page to authorise the app.
-                            </li>
-                            <li>Press <strong>Authorise</strong>.</li>
-                            <li>The page will not load. This is okay! Look at the URL at the top.</li>
-                            <li>Please return to this page and </strong>enter the code from the URL</strong> returned.
-                                This allows the app to
-                                read your activities.</li>
-                            <li>This will look like the following:<br>
-                                <i>http://localhost/exchange_token?state=&code=<strong><u
-                                            style="color: #ef591e;">0d907da3a10cc86d97b0a32eb74b94e40e7c661d</u></strong>&scope=read,activity:read_all</i>
-                            </li>
-                        </p>
-                        <button class="button" onclick="setReadAll()">Submit</button>
-                    </div>
-
-                    <div id="stagetwo" style="display: none;">
-                        <a href="page_html.html" style="color:#ef591e">Back</a><br>
-                        <p> <strong>From Strava API settings:</strong> </p>
-                        <label for="clientsecret">Client Secret:</label>
-                        <input type="text" id="clientsecret" name="clientsecret"
-                            placeholder="swdg7weriug973rqbuiqe"><br>
-                        <p> <strong>From previous stage URL:</strong> </p>
-                        <label for="code">Code:</label>
-                        <input type="text" id="code" name="code" placeholder="23tbg7feg1g08g92308"><br> <br>
-                        <button class="button" onclick="reAuthorise()">Submit</button>
-                        <p id="loading" style="color:#ef591e; display: none;"> Loading...</p>
-                    </div>
+                <div id="welcomeBack"
+                    style="display:none; background-color: #c9c9c9c5; padding: 2%; border-radius: 5%; text-align: center;">
+                    <h3 class="orange">Welcome back!</h3>
+                    <p>If your Strava account has no new activities, pick up where you left off here:</p>
+                    <button class="button" onclick="pickUp()">Skip sign-in</button>
                 </div>
-                <div class="col">
-                    <img src="https://developers.strava.com/images/getting-started-1.png"></img>
+
+                <script>
+                    var checkStore = JSON.parse(localStorage.getItem('scratchmap_routes'));
+                    console.log(typeof checkStore)
+                    console.log(checkStore)
+                    if (checkStore != null) { document.getElementById("welcomeBack").style.display = "block"; }
+                </script>
+
+                <div id='stageone'>
+                    <p>
+                        <br><strong>Please sign up by following the steps below: </strong><br>
+                        <li>Navigate to https://www.strava.com/settings/api to get your API details</li>
+                        <li>Create an app instance, give it a name and category, you can leave all other spaces
+                            blank or put N/A </li>
+                        <li>Get your Client ID from the resulting page and enter it below</li>
+                    </p>
+                    <label for="clientid">Client ID:</label><br>
+                    <input type="text" id="clientid" name="clientid" placeholder="123456"><br>
+                    <p id="clientiderror" style="display: none; color: red"></p>
+                    <p>
+                        <strong>Please read before submitting</strong><br>
+                        <li>Click <strong>Submit</strong> and you will be directed to a page to authorise the app.
+                        </li>
+                        <li>Press <strong>Authorise</strong>.</li>
+                        <li>The page will not load. This is okay! Look at the URL at the top.</li>
+                        <li>Please return to this page and </strong>enter the code from the URL</strong> returned.
+                            This allows the app to
+                            read your activities.</li>
+                        <li>This will look like the following:<br>
+                            <i>http://localhost/exchange_token?state=&code=<strong><u
+                                        style="color: #ef591e;">0d907da3a10cc86d97b0a32eb74b94e40e7c661d</u></strong>&scope=read,activity:read_all</i>
+                        </li>
+                    </p>
+                    <button class="button" onclick="setReadAll()">Submit</button>
+                </div>
+
+                <div id="stagetwo" style="display: none;">
+                    <a href="page_html.html" style="color:#ef591e">Back</a><br>
+                    <p> <strong>From Strava API settings:</strong> </p>
+                    <label for="clientsecret">Client Secret:</label>
+                    <input type="text" id="clientsecret" name="clientsecret" placeholder="swdg7weriug973rqbuiqe"><br>
+                    <p> <strong>From previous stage URL:</strong> </p>
+                    <label for="code">Code:</label>
+                    <input type="text" id="code" name="code" placeholder="23tbg7feg1g08g92308"><br> <br>
+                    <button class="button" onclick="reAuthorise()">Submit</button>
+                    <p id="loading" style="color:#ef591e; display: none;"> Loading...</p>
                 </div>
             </div>
+            <div class="col">
+                <img src="https://developers.strava.com/images/getting-started-1.png"></img>
+            </div>
         </div>
+    </div>
 
 </body>
 

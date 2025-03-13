@@ -37,13 +37,17 @@ function getActivities(res) {
     );
   }
 
+  //Waits for all fetch requests to complete before loading map page
   Promise.all(fetchPromises).then(() => {
+    localStorage.setItem("distances", distances);
+    localStorage.setItem("elevations", elevations);
+    localStorage.setItem("activities", activities);
     console.log('All activities fetched and stored');
     window.location.href = "map.html";
   });
 }
 
-//Authorises the user based off their details provided, uses the Medium method where authorization code used
+//Authorises the user based off their details provided, uses authorisation code method
 function reAuthorise() {
   document.getElementById("loading").style.color = "#ef591e";
   document.getElementById("loading").innerHTML = "Loading..."
@@ -112,39 +116,43 @@ function decodePolyline(polylineStr) {
 
 routes = [];
 
+//Decodes JSON into polylines stored in cookie
 function parseActivities(data) {
   
   for (const item of data) {
     polyline = item["map"]["summary_polyline"];
     decoded_line = decodePolyline(polyline);
-    routes.push(decoded_line);
+    if (decoded_line && decoded_line.length > 0) {routes.push(decoded_line)};
     }
+
     localStorage.setItem("scratchmap_routes", JSON.stringify(routes))
     console.log('storedroutes');
   console.log(routes);
 }
 
+//Straight redirect to map page for use when cookie present
 function pickUp() {
   window.location.href = "map.html"
 }
 
+var distances = 0;
+var elevations = 0;
+var activities = 0;
+
+//Gets statistics from JSON and stores these in cookies
 function getTotal(data) {
-  var distances = 0;
-  var elevations = 0;
-  var activities = 0;
+
   for (const item of data) {
     distance_single = Number(item["distance"]);
     distances = distances + distance_single;
   }
   for (const item of data) {
     elevation_single = Number(Math.round(item["total_elevation_gain"]));
-    elevations = elevations + elevation_single
+    elevations = elevations + elevation_single;
     activities = activities + 1;
   }
     console.log(distances);
-    localStorage.setItem("distances", distances)
-    localStorage.setItem("elevations", elevations)
-    localStorage.setItem("activities", activities)
+
 }
 
 console.log(activitiesData);

@@ -1,20 +1,24 @@
 <html>
 
 <head>
+
+  <!--Import Javascript files for map loading-->
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
   <script src=auth_key.js></script>
   <script src='map_js.js'></script>
 
   <!--Bootstrap loading-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
   <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.13.2/calcite.css" />
   <script type="module" src="https://js.arcgis.com/calcite-components/2.13.2/calcite.esm.js"></script>
 
-  
+
   <!-- Load the ArcGIS Maps SDK for JavaScript from CDN -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
   <script src="https://js.arcgis.com/4.31/"></script>
@@ -23,6 +27,7 @@
   <script type="module" src="https://js.arcgis.com/map-components/4.31/arcgis-map-components.esm.js"></script>
 </head>
 
+<!--Custom CSS Styling-->
 <style>
   html,
   body,
@@ -32,17 +37,20 @@
     height: calc(100% - 100px);
     width: 100%;
   }
+
   .header {
-  padding: 0px;
-  background: #ffffff;
-  color: #ef591e;
-  font-size: 20px;
+    padding: 0px;
+    background: #ffffff;
+    color: #ef591e;
+    font-size: 20px;
   }
+
   .orange {
-  padding: 0px;
-  color: #ef591e;
-  text-decoration: none;
+    padding: 0px;
+    color: #ef591e;
+    text-decoration: none;
   }
+
   .reload {
     background-color: none;
     color: #ef591e;
@@ -51,20 +59,29 @@
     text-decoration: none;
     padding: 5px;
   }
+
   .black {
     color: #282424;
   }
-  
 </style>
 
+<!--On page load get map and stats-->
+
 <body onload="loadMap(), setDistance()">
+
+  <!--Header-->
   <div class="container-fluid  text-center header">
     <div class="row align-items-center bg-body-secondary" style="padding-bottom: 10px;">
-      <div class="col padding">
-        <img src="coins/logo.png" width="20%"><br>
+      <div class="col-4 padding"></div>
+      <div class="col-4 padding">
+        <img src="coins/logo.png" width="60%"><br>
+      </div>
+      <div class="col-4 padding">
         <a class="reload button" href="page_html.html"> Reload credentials </a><br>
       </div>
     </div>
+
+    <!--Scratcher options and statistics-->
     <div class="row text-center align-items-center">
       <div class="col-8" id="coins">
         <p class="orange">Choose your scratcher</p>
@@ -74,14 +91,19 @@
         <img src="coins/2pound.png" onclick="widthButton(50)" width="8.5%">
       </div>
       <div class="col-4">
-        <h4 class="black" style="padding-bottom: 2px;">You've travelled <strong class="orange" id="distancemeter"></strong> km,</h3>
-        <h4 class="black" style="padding-bottom: 2px;">ascended <strong class="orange" id="elevationmeter"></strong> m,</h3>
-        <h4 class="black" style="padding-bottom: 2px;">and logged <strong class="orange" id="activitymeter"></strong> activities!</h3>
+        <h4 class="black" style="padding-bottom: 2px;">You've travelled <strong class="orange"
+            id="distancemeter"></strong> km,</h3>
+          <h4 class="black" style="padding-bottom: 2px;">ascended <strong class="orange" id="elevationmeter"></strong>
+            m,</h3>
+            <h4 class="black" style="padding-bottom: 2px;">and logged <strong class="orange"
+                id="activitymeter"></strong> activities!</h3>
       </div>
     </div>
+    <!--ArcGIS Map-->
     <arcgis-map center="-1.898575, 52.4823" zoom="6">
       <arcgis-zoom position="top-left"></arcgis-zoom>
     </arcgis-map>
   </div>
 </body>
+
 </html>
