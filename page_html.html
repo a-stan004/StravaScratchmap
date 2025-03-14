@@ -22,13 +22,13 @@
     .header {
         padding: 0px;
         background: #ffffff;
-        color: #ef591e;
+        color: #0069af;
         font-size: 20px;
     }
 
     .orange {
         padding: 0px;
-        color: #ef591e;
+        color: #0069af;
         text-decoration: none;
     }
 
@@ -44,31 +44,40 @@
     }
 
     .button {
-        background-color: #ef591e;
+        background-color: #0069af;
         padding: 10px;
         color: white;
         border-radius: 20%;
         border-width: 0px;
     }
+    .reload {
+    background-color: none;
+    color: #0069af;
+    border: 2px solid #0069af;
+    border-radius: 15px;
+    text-decoration: none;
+    padding: 5px;
+  }
 </style>
 
 <!--Header-->
+
 <body>
     <div class="container-fluid text-center header">
         <div class="row align-items-center bg-body-secondary">
             <div class="col">
-                <img src="coins/logo.png" width="35%">
+                <img src="img_resources/logo.png" width="35%">
             </div>
             <div class="col">
-                <a class="orange" href="page_html.html"> Reload credentials </a>
+                <a class="orange reload" href="page_html.html"> Reload credentials </a>
             </div>
         </div>
     </div>
-<!--Sign in page-->
+    <!--Sign in page-->
     <div>
         <div class="row maincolumn">
             <div class="col">
-                <h1> Welcome to StravaScratchMap </h1>
+                <h1 style="text-align: center;"> Welcome to StravaScratchMap </h1>
 
                 <div id="welcomeBack"
                     style="display:none; background-color: #c9c9c9c5; padding: 2%; border-radius: 5%; text-align: center;">
@@ -106,14 +115,14 @@
                             read your activities.</li>
                         <li>This will look like the following:<br>
                             <i>http://localhost/exchange_token?state=&code=<strong><u
-                                        style="color: #ef591e;">0d907da3a10cc86d97b0a32eb74b94e40e7c661d</u></strong>&scope=read,activity:read_all</i>
+                                        style="color: #0069af;">0d907da3a10cc86d97b0a32eb74b94e40e7c661d</u></strong>&scope=read,activity:read_all</i>
                         </li>
                     </p>
                     <button class="button" onclick="setReadAll()">Submit</button>
                 </div>
 
                 <div id="stagetwo" style="display: none;">
-                    <a href="page_html.html" style="color:#ef591e">Back</a><br>
+                    <a href="page_html.html" style="color:#0069af">Back</a><br>
                     <p> <strong>From Strava API settings:</strong> </p>
                     <label for="clientsecret">Client Secret:</label>
                     <input type="text" id="clientsecret" name="clientsecret" placeholder="swdg7weriug973rqbuiqe"><br>
@@ -121,13 +130,16 @@
                     <label for="code">Code:</label>
                     <input type="text" id="code" name="code" placeholder="23tbg7feg1g08g92308"><br> <br>
                     <button class="button" onclick="reAuthorise()">Submit</button>
-                    <p id="loading" style="color:#ef591e; display: none;"> Loading...</p>
+                    <p id="loading" style="color:#0069af; display: none;"> Loading...</p>
                 </div>
             </div>
             <div class="col">
                 <img src="https://developers.strava.com/images/getting-started-1.png"></img>
             </div>
         </div>
+    </div>
+    <div class="maincolumn text-center">
+        <a class="orange reload" href="https://forms.office.com/e/dUkZfK7zg5"> Give feedback </a>
     </div>
 
 </body>

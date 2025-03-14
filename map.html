@@ -5,7 +5,11 @@
   <!--Import Javascript files for map loading-->
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <script src=auth_key.js></script>
+  <script>
+    var esriConfig = {
+      apiKey: ""
+    };
+  </script>
   <script src='map_js.js'></script>
 
   <!--Bootstrap loading-->
@@ -41,20 +45,20 @@
   .header {
     padding: 0px;
     background: #ffffff;
-    color: #ef591e;
+    color: #0069af;
     font-size: 20px;
   }
 
   .orange {
     padding: 0px;
-    color: #ef591e;
+    color: #0069af;
     text-decoration: none;
   }
 
   .reload {
     background-color: none;
-    color: #ef591e;
-    border: 2px solid #ef591e;
+    color: #0069af;
+    border: 2px solid #0069af;
     border-radius: 15px;
     text-decoration: none;
     padding: 5px;
@@ -72,9 +76,11 @@
   <!--Header-->
   <div class="container-fluid  text-center header">
     <div class="row align-items-center bg-body-secondary" style="padding-bottom: 10px;">
-      <div class="col-4 padding"></div>
       <div class="col-4 padding">
-        <img src="coins/logo.png" width="60%"><br>
+        <a class="orange reload" href="https://forms.office.com/e/dUkZfK7zg5"> Give feedback </a>
+      </div>
+      <div class="col-4 padding">
+        <img src="img_resources/logo.png" width="60%"><br>
       </div>
       <div class="col-4 padding">
         <a class="reload button" href="page_html.html"> Reload credentials </a><br>
@@ -85,10 +91,10 @@
     <div class="row text-center align-items-center">
       <div class="col-8" id="coins">
         <p class="orange">Choose your scratcher</p>
-        <img src="coins/1p.png" onclick="widthButton(5)" width="6%">
-        <img src="coins/2p.png" onclick="widthButton(10)" width="7%">
-        <img src="coins/50p.png" onclick="widthButton(20)" width="8%">
-        <img src="coins/2pound.png" onclick="widthButton(50)" width="8.5%">
+        <img src="img_resources/1p.png" onclick="widthButton(5)" width="6%">
+        <img src="img_resources/2p.png" onclick="widthButton(10)" width="7%">
+        <img src="img_resources/50p.png" onclick="widthButton(20)" width="8%">
+        <img src="img_resources/2pound.png" onclick="widthButton(50)" width="8.5%">
       </div>
       <div class="col-4">
         <h4 class="black" style="padding-bottom: 2px;">You've travelled <strong class="orange"

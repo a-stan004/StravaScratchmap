@@ -1,19 +1,19 @@
-var overallWidth = Number(0)
+var overallWidth = Number(0);
 
 function widthButton(input) {
-  console.log('width button called');
+  console.log("Width change called");
   overallWidth = Number(input);
-  console.log(overallWidth);
+  console.log(`New width is set as ${overallWidth}`);
 }
 
 function setDistance() {
-  var distances = (Number(Math.round(localStorage.getItem("distances")/1000)));
+  var distances = Number(Math.round(localStorage.getItem("distances") / 1000));
   var elevations = localStorage.getItem("elevations");
   var activities = localStorage.getItem("activities");
-  console.log(`distance is ${distances}`);
-  document.getElementById('distancemeter').innerHTML = distances;
-  document.getElementById('elevationmeter').innerHTML = elevations;
-  document.getElementById('activitymeter').innerHTML = activities;
+  console.log(`Distance conversion completed and set to ${distances}`);
+  document.getElementById("distancemeter").innerHTML = distances;
+  document.getElementById("elevationmeter").innerHTML = elevations;
+  document.getElementById("activitymeter").innerHTML = activities;
 }
 
 //Get required packages and load map
@@ -37,9 +37,9 @@ function loadMap() {
     SimpleRenderer,
     WebTileLayer
   ) => {
-
     //Establish map
     const arcgisMap = document.querySelector("arcgis-map");
+    console.log("Map load complete");
 
     //Add tile layer for basemap
     const basemap_vector = new WebTileLayer({
@@ -57,6 +57,7 @@ function loadMap() {
 
     //Set as map basemap
     arcgisMap.basemap = basemap;
+    console.log("Basemap load complete");
 
     //Establish blank graphics layer
     const graphicsLayer = new GraphicsLayer({
@@ -73,16 +74,15 @@ function loadMap() {
     };
 
     /**
-      * Uses check width to gather user input, clears routes and rewrites
-    */
+     * Uses check width to gather user input from coins, clears routes and rewrites
+     */
     function updatePolylineWidth() {
-      const width = overallWidth
-      console.log('width provided is ', width);
+      const width = overallWidth;
 
       const simpleLineSymbol = {
         type: "simple-line",
         color: [0, 0, 0],
-        width: width
+        width: width,
       };
 
       const polylineGraphic = new Graphic({
@@ -97,7 +97,9 @@ function loadMap() {
     updatePolylineWidth();
 
     //Everytime input changes redraw the graphics layer
-    document.getElementById("coins").addEventListener("click", updatePolylineWidth);
+    document
+      .getElementById("coins")
+      .addEventListener("click", updatePolylineWidth);
 
     //When view is ready add layers
     arcgisMap.addEventListener("arcgisViewReadyChange", () => {
@@ -143,5 +145,4 @@ function loadMap() {
 }
 
 loadMap();
-
-
+console.log("Full page load completed");

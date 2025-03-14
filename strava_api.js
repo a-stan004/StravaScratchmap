@@ -14,8 +14,10 @@ function setReadAll() {
     document.getElementById("stagetwo").style.display = "block";
   } else {
     document.getElementById("clientiderror").style.display = "block";
-    document.getElementById("clientiderror").innerHTML = "Please enter a valid Client ID";
+    document.getElementById("clientiderror").innerHTML =
+      "Please enter a valid Client ID";
   }
+  console.log("Authorisation window opened to authenticate");
 }
 
 const authlink = "https://www.strava.com/oauth/token?";
@@ -26,6 +28,7 @@ let activitiesData = [];
 function getActivities(res) {
   const fetchPromises = [];
   for (let counter = 1; counter < 10; counter++) {
+    console.log(`Accessing page ${counter} of user activities`);
     const activities_link = `https://www.strava.com/api/v3/athlete/activities?page=${counter}&per_page=200&access_token=${res.access_token}`;
     fetchPromises.push(
       fetch(activities_link)
@@ -42,7 +45,7 @@ function getActivities(res) {
     localStorage.setItem("distances", distances);
     localStorage.setItem("elevations", elevations);
     localStorage.setItem("activities", activities);
-    console.log('All activities fetched and stored');
+    console.log("All activities fetched and stored");
     window.location.href = "map.html";
   });
 }
@@ -50,14 +53,11 @@ function getActivities(res) {
 //Authorises the user based off their details provided, uses authorisation code method
 function reAuthorise() {
   document.getElementById("loading").style.color = "#ef591e";
-  document.getElementById("loading").innerHTML = "Loading..."
+  document.getElementById("loading").innerHTML = "Loading...";
   document.getElementById("loading").style.display = "block";
   const userclientid = clientidurl;
-  console.log(userclientid);
   const userclientsecret = getDetails("clientsecret");
-  console.log(userclientsecret);
   const usercode = getDetails("code");
-  console.log(usercode);
   fetch(authlink, {
     method: "post",
     headers: {
@@ -72,12 +72,12 @@ function reAuthorise() {
     }),
   }).then((res) => {
     if (res.ok) {
-      res
-        .json()
-        .then((res) => getActivities(res))} else {
+      res.json().then((res) => getActivities(res));
+    } else {
       document.getElementById("loading").style.color = "red";
       document.getElementById("loading").innerHTML =
         "An error occured, please check details and try again";
+      console.log("Error message displayed, fetch failed");
     }
   });
 }
@@ -118,21 +118,20 @@ routes = [];
 
 //Decodes JSON into polylines stored in cookie
 function parseActivities(data) {
-  
   for (const item of data) {
     polyline = item["map"]["summary_polyline"];
     decoded_line = decodePolyline(polyline);
-    if (decoded_line && decoded_line.length > 0) {routes.push(decoded_line)};
+    if (decoded_line && decoded_line.length > 0) {
+      routes.push(decoded_line);
     }
+  }
 
-    localStorage.setItem("scratchmap_routes", JSON.stringify(routes))
-    console.log('storedroutes');
-  console.log(routes);
+  localStorage.setItem("scratchmap_routes", JSON.stringify(routes));
 }
 
 //Straight redirect to map page for use when cookie present
 function pickUp() {
-  window.location.href = "map.html"
+  window.location.href = "map.html";
 }
 
 var distances = 0;
@@ -141,7 +140,6 @@ var activities = 0;
 
 //Gets statistics from JSON and stores these in cookies
 function getTotal(data) {
-
   for (const item of data) {
     distance_single = Number(item["distance"]);
     distances = distances + distance_single;
@@ -151,8 +149,4 @@ function getTotal(data) {
     elevations = elevations + elevation_single;
     activities = activities + 1;
   }
-    console.log(distances);
-
 }
-
-console.log(activitiesData);
