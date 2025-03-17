@@ -4,6 +4,10 @@
 
 Access the web application here: https://a-stan004.github.io/StravaScratchmap
 
+# Example
+
+![Example](img_resources/example.png)
+
 # About the application
 
 This application is **not affiliated with Strava** but uses the Strava API to allow you to make a scratchmap style map of your routes! No information is stored outside of your browser, or sent to any external resource.
