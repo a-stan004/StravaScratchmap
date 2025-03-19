@@ -23,31 +23,47 @@ function setReadAll() {
 const authlink = "https://www.strava.com/oauth/token?";
 
 let activitiesData = [];
+var per_page = 200;
+var attempts = 20; 
 
 //Runs last and gets the activities
 function getActivities(res) {
-  const fetchPromises = [];
-  for (let counter = 1; counter < 40; counter++) {
-    console.log(`Accessing page ${counter} of user activities`);
-    const activities_link = `https://www.strava.com/api/v3/athlete/activities?page=${counter}&per_page=100&access_token=${res.access_token}`;
-    fetchPromises.push(
-      fetch(activities_link)
-        .then((res) => res.json())
-        .then((data) => {
-          parseActivities(data);
-          getTotal(data);
-        })
-    );
+    try {
+      const fetchPromises = [];
+      for (let counter = 1; counter < attempts; counter++) {
+        console.log(`Accessing page ${counter} of user activities`);
+        const activities_link = `https://www.strava.com/api/v3/athlete/activities?page=${counter}&per_page=${per_page}&access_token=${res.access_token}`;
+        fetchPromises.push(
+          fetch(activities_link)
+            .then((res) => res.json())
+            .then((data) => {
+              parseActivities(data);
+              getTotal(data);
+            })
+        );
+      }
+      //Waits for all fetch requests to complete before loading map page
+      Promise.all(fetchPromises).then(() => {
+        localStorage.setItem("distances", distances);
+        localStorage.setItem("elevations", elevations);
+        localStorage.setItem("activities", activities);
+        console.log("All activities fetched and stored");
+        window.location.href = "map.html";
+      });
+    } catch {
+      if (attempts != 1) { 
+      per_page = Round(per_page / 2);
+      attempts = attempts * 2;
+      console.log("Records returned reduced");
+      attempt_count = attempt_count + 1;
+      reAuthorise();
+      } else {
+        document.getElementById("loading").style.color = "red";
+        document.getElementById("loading").innerHTML =
+        "An error occured, your Strava data is not compatible with this app, please submit feedback";
+        console.log("Records became too small, fetch failed");
+      }
   }
-
-  //Waits for all fetch requests to complete before loading map page
-  Promise.all(fetchPromises).then(() => {
-    localStorage.setItem("distances", distances);
-    localStorage.setItem("elevations", elevations);
-    localStorage.setItem("activities", activities);
-    console.log("All activities fetched and stored");
-    window.location.href = "map.html";
-  });
 }
 
 //Authorises the user based off their details provided, uses authorisation code method

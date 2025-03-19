@@ -73,6 +73,8 @@ function loadMap() {
         if (dataUnparsed) {
           const dataParsed = JSON.parse(dataUnparsed);
           displayRoute = displayRoute.concat(dataParsed);
+        } else {
+          localStorage.removeItem(`scratchmap_routes${counter}`);
         }
       }
       console.log(displayRoute);
