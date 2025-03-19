@@ -27,9 +27,9 @@ let activitiesData = [];
 //Runs last and gets the activities
 function getActivities(res) {
   const fetchPromises = [];
-  for (let counter = 1; counter < 20; counter++) {
+  for (let counter = 1; counter < 40; counter++) {
     console.log(`Accessing page ${counter} of user activities`);
-    const activities_link = `https://www.strava.com/api/v3/athlete/activities?page=${counter}&per_page=200&access_token=${res.access_token}`;
+    const activities_link = `https://www.strava.com/api/v3/athlete/activities?page=${counter}&per_page=100&access_token=${res.access_token}`;
     fetchPromises.push(
       fetch(activities_link)
         .then((res) => res.json())

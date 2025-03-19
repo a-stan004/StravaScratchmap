@@ -68,7 +68,7 @@ function loadMap() {
 
     // Function to read cookies and concatenate arrays
     function readCookie() {
-      for (let counter = 2; counter <= 20; counter++) {
+      for (let counter = 2; counter <= 40; counter++) {
         const dataUnparsed = localStorage.getItem(`scratchmap_routes${counter}`);
         if (dataUnparsed) {
           const dataParsed = JSON.parse(dataUnparsed);
