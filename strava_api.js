@@ -27,7 +27,7 @@ let activitiesData = [];
 //Runs last and gets the activities
 function getActivities(res) {
   const fetchPromises = [];
-  for (let counter = 1; counter < 10; counter++) {
+  for (let counter = 1; counter < 20; counter++) {
     console.log(`Accessing page ${counter} of user activities`);
     const activities_link = `https://www.strava.com/api/v3/athlete/activities?page=${counter}&per_page=200&access_token=${res.access_token}`;
     fetchPromises.push(
@@ -115,6 +115,7 @@ function decodePolyline(polylineStr) {
 }
 
 routes = [];
+var cookieCounter = 1;
 
 //Decodes JSON into polylines stored in cookie
 function parseActivities(data) {
@@ -126,7 +127,8 @@ function parseActivities(data) {
     }
   }
 
-  localStorage.setItem("scratchmap_routes", JSON.stringify(routes));
+  localStorage.setItem(`scratchmap_routes${cookieCounter}`, JSON.stringify(routes));
+  cookieCounter = cookieCounter + 1;
 }
 
 //Straight redirect to map page for use when cookie present

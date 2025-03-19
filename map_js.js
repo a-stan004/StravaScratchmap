@@ -64,8 +64,21 @@ function loadMap() {
       blendMode: "destination-atop",
     });
 
-    //Write cookie to let variable
-    let displayRoute = JSON.parse(localStorage.getItem("scratchmap_routes"));
+    let displayRoute = JSON.parse(localStorage.getItem(`scratchmap_routes1`)) || [];
+
+    // Function to read cookies and concatenate arrays
+    function readCookie() {
+      for (let counter = 2; counter <= 20; counter++) {
+        const dataUnparsed = localStorage.getItem(`scratchmap_routes${counter}`);
+        if (dataUnparsed) {
+          const dataParsed = JSON.parse(dataUnparsed);
+          displayRoute = displayRoute.concat(dataParsed);
+        }
+      }
+      console.log(displayRoute);
+    }
+
+    readCookie();
 
     //Create polyline from users routes
     const polyline = {
