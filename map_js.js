@@ -1,5 +1,37 @@
 var overallWidth = Number(0);
 
+function decodePolyline(polylineStr) {
+  let index = 0,
+    lat = 0,
+    lng = 0;
+  const coordinates = [];
+  const changes = { latitude: 0, longitude: 0 };
+
+  while (index < polylineStr.length) {
+    for (const unit of ["latitude", "longitude"]) {
+      let shift = 0,
+        result = 0;
+
+      while (true) {
+        const byte = polylineStr.charCodeAt(index++) - 63;
+        result |= (byte & 0x1f) << shift;
+        shift += 5;
+        if (byte < 0x20) break;
+      }
+
+      changes[unit] = result & 1 ? ~(result >> 1) : result >> 1;
+    }
+
+    lat += changes.latitude;
+    lng += changes.longitude;
+
+    coordinates.push([lng / 1e5, lat / 1e5]);
+  }
+
+  return coordinates;
+}
+
+
 function widthButton(input) {
   console.log("Width change called");
   overallWidth = Number(input);
@@ -64,21 +96,34 @@ function loadMap() {
       blendMode: "destination-atop",
     });
 
-    let displayRoute = JSON.parse(localStorage.getItem(`scratchmap_routes1`)) || [];
+    let displayRoute = [];
 
     // Function to read cookies and concatenate arrays
     function readCookie() {
-      for (let counter = 2; counter <= 40; counter++) {
+      displayRoute = [];
+
+      for (let counter = 1; counter <= 40; counter++) {
         const dataUnparsed = localStorage.getItem(`scratchmap_routes${counter}`);
+        console.log(`Checking key: scratchmap_routes${counter}`);
+
         if (dataUnparsed) {
-          const dataParsed = JSON.parse(dataUnparsed);
-          displayRoute = displayRoute.concat(dataParsed);
-        } else {
-          localStorage.removeItem(`scratchmap_routes${counter}`);
+          try {
+            const polylineArray = JSON.parse(dataUnparsed);
+
+            for (const encoded of polylineArray) {
+              const decoded = decodePolyline(encoded);
+              console.log('Decoded:', decoded);
+              displayRoute.push(decoded);
+            }
+          } catch (e) {
+            console.error(`Error parsing or decoding data for counter ${counter}:`, e);
+          }
         }
       }
-      console.log(displayRoute);
+
+      console.log('Final displayRoute:', displayRoute);
     }
+
 
     readCookie();
 

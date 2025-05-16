@@ -98,38 +98,6 @@ function reAuthorise() {
   });
 }
 
-// Thanks to mgd722 for the github function to decrypt polylines, converted to JS
-function decodePolyline(polylineStr) {
-  let index = 0,
-    lat = 0,
-    lng = 0;
-  const coordinates = [];
-  const changes = { latitude: 0, longitude: 0 };
-
-  while (index < polylineStr.length) {
-    for (const unit of ["latitude", "longitude"]) {
-      let shift = 0,
-        result = 0;
-
-      while (true) {
-        const byte = polylineStr.charCodeAt(index++) - 63;
-        result |= (byte & 0x1f) << shift;
-        shift += 5;
-        if (byte < 0x20) break;
-      }
-
-      changes[unit] = result & 1 ? ~(result >> 1) : result >> 1;
-    }
-
-    lat += changes.latitude;
-    lng += changes.longitude;
-
-    coordinates.push([lng / 1e5, lat / 1e5]);
-  }
-
-  return coordinates;
-}
-
 routes = [];
 var cookieCounter = 1;
 
@@ -137,7 +105,7 @@ var cookieCounter = 1;
 function parseActivities(data) {
   for (const item of data) {
     polyline = item["map"]["summary_polyline"];
-    decoded_line = decodePolyline(polyline);
+    decoded_line = polyline;
     if (decoded_line && decoded_line.length > 0) {
       routes.push(decoded_line);
     }
